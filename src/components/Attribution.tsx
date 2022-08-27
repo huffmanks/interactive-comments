@@ -1,6 +1,6 @@
 const Attribution = () => {
     return (
-        <div className='mt-6 text-xs text-center'>
+        <div className='text-xs text-center'>
             <span>Challenge by </span>
             <a className='text-moderate-blue' href='https://www.frontendmentor.io?ref=challenge'>
                 Frontend Mentor

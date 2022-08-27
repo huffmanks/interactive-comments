@@ -1,33 +1,37 @@
-import { MdAdd, MdRemove } from 'react-icons/md'
+import { useComment } from '../context/CommentContext'
 
 import ActionButton from './ActionButton'
 import ProfileImage from './ProfileImage'
+import VoteButton from './VoteButton'
 
-const Comment = () => {
+const Comment = ({ comment }: any) => {
+    const { currentUserInfo } = useComment()
+
     return (
-        <div className='p-6 bg-white rounded-lg'>
+        <div className='w-full p-6 bg-white rounded-lg shadow-md'>
             <div className='flex gap-7'>
-                <div className='flex flex-col items-center'>
-                    <button className='pt-2.5 pb-2 px-3 bg-very-light-gray rounded-tl-lg rounded-tr-lg'>
-                        <MdAdd />
-                    </button>
-                    <span className='py-2 px-3 bg-very-light-gray text-moderate-blue font-bold'>12</span>
-                    <button className='pt-2 pb-2.5 px-3 bg-very-light-gray rounded-bl-lg rounded-br-lg'>
-                        <MdRemove />
-                    </button>
-                </div>
-                <div>
+                <VoteButton score={comment.score} />
+                <div className='w-full flex flex-col'>
                     <div className='flex justify-between items-center gap-6 mb-4'>
-                        <div className='flex justify-between items-center gap-4'>
-                            <ProfileImage imageSrc='amy' imageAlt='amy' />
-                            <div className='text-dark-blue font-medium'>amyrobson</div>
-                            <div className='text-sm'>1 month ago</div>
+                        <div className='flex items-center gap-4'>
+                            <ProfileImage imageSrc={comment.user.image} imageAlt={comment.user.username} />
+                            <div className='text-dark-blue font-medium'>{comment.user.username}</div>
+                            {currentUserInfo.username === comment.user.username && <div className='py-1 px-2 bg-moderate-blue text-white text-xs'>you</div>}
+                            <div className='text-sm'>{comment.createdAt}</div>
                         </div>
-                        <ActionButton icon='MdReply' color='blue' buttonText='Reply' />
+                        <div className='flex items-center gap-4'>
+                            {currentUserInfo.username === comment.user.username ? (
+                                <>
+                                    <ActionButton icon='MdDelete' color='red' buttonText='Delete' />
+                                    <ActionButton icon='MdEdit' color='blue' buttonText='Edit' />
+                                </>
+                            ) : (
+                                <ActionButton icon='MdReply' color='blue' buttonText='Reply' />
+                            )}
+                        </div>
                     </div>
-                    <div>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint nesciunt sequi saepe corporis quidem beatae vel impedit sunt, vero modi neque tenetur, odio autem eligendi ratione
-                        vitae excepturi? Esse, doloribus?
+                    <div className='flex-1'>
+                        {comment?.replyingTo && <span className='text-moderate-blue font-medium'>@{comment.replyingTo}</span>} {comment.content}
                     </div>
                 </div>
             </div>

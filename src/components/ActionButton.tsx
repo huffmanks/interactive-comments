@@ -1,6 +1,6 @@
-import { MdOutlineEdit, MdDelete, MdReply } from 'react-icons/md'
+import { MdEdit, MdDelete, MdReply } from 'react-icons/md'
 
-const icons = { MdOutlineEdit, MdDelete, MdReply }
+const icons = { MdEdit, MdDelete, MdReply }
 
 interface IProps {
     icon: keyof typeof icons
@@ -22,8 +22,8 @@ const ActionButton = ({ icon, color, buttonText }: IProps) => {
         },
     }
     return (
-        <button className='flex items-center justify-center gap-1'>
-            <Icon className={`w-5 h-5 mb-1 ${styles.iconColor[color]}`} />
+        <button className='flex items-center justify-center gap-1 transition-opacity ease-in-out duration-500 hover:opacity-50'>
+            <Icon className={`w-5 h-5 mb-0.5 ${styles.iconColor[color]}`} />
             <span className={`font-medium ${styles.textColor[color]}`}>{buttonText}</span>
         </button>
     )
