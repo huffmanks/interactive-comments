@@ -23,6 +23,10 @@ declare global {
     }
 
     interface IStyles {
+        [key: string]: string
+    }
+
+    interface INestedStyles {
         [key: string]: {
             [key: string]: string
         }

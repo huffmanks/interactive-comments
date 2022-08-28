@@ -3,6 +3,9 @@ module.exports = {
     content: ['index.html', './src/**/*.{ts,tsx}'],
     theme: {
         extend: {
+            screens: {
+                xs: '475px',
+            },
             colors: {
                 ['moderate-blue']: 'hsl(238, 40%, 52%)',
                 ['soft-red']: 'hsl(358, 79%, 66%)',

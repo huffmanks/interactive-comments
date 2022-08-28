@@ -11,17 +11,19 @@ const App = () => {
     const { data } = useComment()
 
     return (
-        <div className='max-w-screen-md min-h-screen flex flex-col justify-center items-center gap-6 mx-auto'>
+        <div className='max-w-screen-md min-h-screen flex flex-col justify-center items-center gap-6 mx-auto px-4'>
             <h1 className='text-moderate-blue text-3xl'>Interactive comments</h1>
             {data.map((comment: IComment) => (
                 <Fragment key={comment.id}>
                     <Comment comment={comment} />
-                    {comment?.replies &&
-                        comment.replies.map((reply: IReply) => (
-                            <NestedCommentContainer key={reply.id}>
-                                <Comment comment={reply} />
-                            </NestedCommentContainer>
-                        ))}
+                    <NestedCommentContainer>
+                        {comment?.replies &&
+                            comment.replies.map((reply: IReply) => (
+                                <Fragment key={reply.id}>
+                                    <Comment comment={reply} />
+                                </Fragment>
+                            ))}
+                    </NestedCommentContainer>
                 </Fragment>
             ))}
 

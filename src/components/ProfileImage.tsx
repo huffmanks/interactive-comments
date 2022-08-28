@@ -5,8 +5,8 @@ interface IProps {
 
 const ProfileImage = ({ imageSrc, imageAlt }: IProps) => {
     return (
-        <div>
-            <img className='block w-10 max-w-full h-auto' src={imageSrc} alt={imageAlt} />
+        <div className='w-10'>
+            <img className='block max-w-full h-auto' src={imageSrc} alt={imageAlt} />
         </div>
     )
 }

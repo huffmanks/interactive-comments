@@ -12,7 +12,7 @@ interface IProps {
 const ActionButton = ({ icon, color, buttonText, clickHandler }: IProps) => {
     const Icon = icons[icon]
 
-    const styles: IStyles = {
+    const styles: INestedStyles = {
         iconColor: {
             blue: 'fill-moderate-blue',
             red: 'fill-soft-red',
