@@ -1,6 +1,6 @@
 {
     "currentUser": {
-        "image": "./assets/julius-omo.webp",
+        "image": "/assets/julius-omo.webp",
         "username": "juliusomo"
     },
     "comments": [
@@ -10,7 +10,7 @@
             "createdAt": "1 month ago",
             "score": 12,
             "user": {
-                "image": "./assets/amy-robson.webp",
+                "image": "/assets/amy-robson.webp",
                 "username": "amyrobson"
             },
             "replies": []
@@ -21,7 +21,7 @@
             "createdAt": "2 weeks ago",
             "score": 5,
             "user": {
-                "image": "./assets/max-blagun.webp",
+                "image": "/assets/max-blagun.webp",
                 "username": "maxblagun"
             },
             "replies": [
@@ -32,7 +32,7 @@
                     "score": 4,
                     "replyingTo": "maxblagun",
                     "user": {
-                        "image": "./assets/ramses-miron.webp",
+                        "image": "/assets/ramses-miron.webp",
                         "username": "ramsesmiron"
                     }
                 },
@@ -43,7 +43,7 @@
                     "score": 2,
                     "replyingTo": "ramsesmiron",
                     "user": {
-                        "image": "./assets/julius-omo.webp",
+                        "image": "/assets/julius-omo.webp",
                         "username": "juliusomo"
                     }
                 }
