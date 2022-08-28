@@ -3,15 +3,13 @@ import juliusomo from '../avatars/juliusomo.webp'
 import maxblagun from '../avatars/maxblagun.webp'
 import ramsesmiron from '../avatars/ramsesmiron.webp'
 
-const images = { amyrobson, juliusomo, maxblagun, ramsesmiron }
-
-interface IProps {
-    user: keyof typeof images
+interface Images {
+    [key: string]: string
 }
 
-console.log(images)
+const images: Images = { amyrobson, juliusomo, maxblagun, ramsesmiron }
 
-const ProfileImage = ({ user }: IProps) => {
+const ProfileImage = ({ user }: any) => {
     const imageSrc = images[user]
 
     return (

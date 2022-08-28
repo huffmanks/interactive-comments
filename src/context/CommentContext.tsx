@@ -35,10 +35,13 @@ const CommentContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const handleAddComment = () => {
         if (!content) return
 
+        const date = new Date()
+        const unixTimestamp = Math.floor(date.getTime() / 1000)
+
         setData([
             ...data,
             {
-                id: Number(data.length + 1),
+                id: unixTimestamp,
                 content,
                 createdAt: 'Today',
                 score: 0,
