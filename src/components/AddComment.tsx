@@ -5,16 +5,16 @@ import ProfileImage from './ProfileImage'
 import Textarea from './Textarea'
 
 const AddComment = () => {
-    const { currentUserInfo } = useComment()
+    const { user, handleAddComment } = useComment()
 
     return (
         <div className='w-full p-6 bg-white rounded-lg shadow-md'>
             <div className='flex justify-center gap-7'>
-                <ProfileImage imageSrc={currentUserInfo.image} imageAlt={currentUserInfo.username} />
+                <ProfileImage imageSrc={user.image} imageAlt={user.username} />
 
                 <Textarea placeholder='Add a comment...' />
 
-                <Button icon='MdSend' buttonText='Send' />
+                <Button icon='MdSend' buttonText='Send' clickHandler={handleAddComment} />
             </div>
         </div>
     )

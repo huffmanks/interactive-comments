@@ -5,7 +5,7 @@ import ProfileImage from './ProfileImage'
 import VoteButton from './VoteButton'
 
 const Comment = ({ comment }: any) => {
-    const { currentUserInfo } = useComment()
+    const { user, handleDeleteComment } = useComment()
 
     return (
         <div className='w-full p-6 bg-white rounded-lg shadow-md'>
@@ -16,13 +16,13 @@ const Comment = ({ comment }: any) => {
                         <div className='flex items-center gap-4'>
                             <ProfileImage imageSrc={comment.user.image} imageAlt={comment.user.username} />
                             <div className='text-dark-blue font-medium'>{comment.user.username}</div>
-                            {currentUserInfo.username === comment.user.username && <div className='py-1 px-2 bg-moderate-blue text-white text-xs'>you</div>}
+                            {user.username === comment.user.username && <div className='py-1 px-2 bg-moderate-blue text-white text-xs'>you</div>}
                             <div className='text-sm'>{comment.createdAt}</div>
                         </div>
                         <div className='flex items-center gap-4'>
-                            {currentUserInfo.username === comment.user.username ? (
+                            {user.username === comment.user.username ? (
                                 <>
-                                    <ActionButton icon='MdDelete' color='red' buttonText='Delete' />
+                                    <ActionButton icon='MdDelete' color='red' buttonText='Delete' clickHandler={(e) => handleDeleteComment(e, comment.id)} />
                                     <ActionButton icon='MdEdit' color='blue' buttonText='Edit' />
                                 </>
                             ) : (
