@@ -6,7 +6,7 @@ import { comments } from '../data/data.json'
 type ClickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number) => void
 
 interface IContext {
-    user: IUser
+    user: string
     data: IComment[]
     content: string
     handleUser: () => void
@@ -23,10 +23,7 @@ const CommentContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [content, setContent] = useState('')
 
     const handleUser = () => {
-        setUser({
-            image: '../assets/max-blagun.webp',
-            username: 'maxblagun',
-        })
+        setUser('maxblagun')
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -45,10 +42,7 @@ const CommentContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
                 content,
                 createdAt: 'Today',
                 score: 0,
-                user: {
-                    image: user.image,
-                    username: user.username,
-                },
+                user,
                 replies: [],
             },
         ])

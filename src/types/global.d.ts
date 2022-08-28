@@ -1,20 +1,12 @@
 export {}
 
 declare global {
-    interface IUser {
-        image: string
-        username: string
-    }
-
     interface IComment {
         id: number
         content: string
         createdAt: string
         score: number
-        user: {
-            image: string
-            username: string
-        }
+        user: string
         replies?: IReply[]
     }
 

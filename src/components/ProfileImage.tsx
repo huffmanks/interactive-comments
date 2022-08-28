@@ -1,12 +1,22 @@
+import amyrobson from '../avatars/amyrobson.webp'
+import juliusomo from '../avatars/juliusomo.webp'
+import maxblagun from '../avatars/maxblagun.webp'
+import ramsesmiron from '../avatars/ramsesmiron.webp'
+
+const images = { amyrobson, juliusomo, maxblagun, ramsesmiron }
+
 interface IProps {
-    imageSrc: string
-    imageAlt: string
+    user: keyof typeof images
 }
 
-const ProfileImage = ({ imageSrc, imageAlt }: IProps) => {
+console.log(images)
+
+const ProfileImage = ({ user }: IProps) => {
+    const imageSrc = images[user]
+
     return (
         <div className='w-10'>
-            <img className='block max-w-full h-auto' src={imageSrc} alt={imageAlt} />
+            <img className='block max-w-full h-auto' src={imageSrc} alt={user} />
         </div>
     )
 }

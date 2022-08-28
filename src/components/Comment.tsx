@@ -18,11 +18,11 @@ const Comment = ({ comment }: any) => {
                 <div className='w-full flex flex-col'>
                     <div className='flex justify-between items-center gap-6 mb-4'>
                         <div className='flex flex-wrap items-center gap-4'>
-                            <ProfileImage imageSrc={comment.user.image} imageAlt={comment.user.username} />
+                            <ProfileImage user={comment.user} />
 
-                            <div className='text-dark-blue font-medium'>{comment.user.username}</div>
+                            <div className='text-dark-blue font-medium'>{comment.user}</div>
 
-                            {user.username === comment.user.username && <div className='py-1 px-2 bg-moderate-blue text-white text-xs'>you</div>}
+                            {user === comment.user && <div className='py-1 px-2 bg-moderate-blue text-white text-xs'>you</div>}
 
                             <div className='text-sm'>{comment.createdAt}</div>
                         </div>

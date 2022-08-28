@@ -17,7 +17,7 @@ const ActionGroup = ({ comment, viewport }: IProps) => {
 
     return (
         <div className={`items-center gap-4 ${styles[viewport]}`}>
-            {user.username === comment.user.username ? (
+            {user === comment.user ? (
                 <>
                     <ActionButton icon='MdDelete' color='red' buttonText='Delete' clickHandler={(e) => handleDeleteComment(e, comment.id)} />
                     <ActionButton icon='MdEdit' color='blue' buttonText='Edit' />
