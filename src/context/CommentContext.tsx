@@ -12,6 +12,8 @@ interface IContext {
     handleUser: () => void
     handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
     handleAddComment: React.MouseEventHandler<HTMLButtonElement>
+    handleIncreaseVote: ClickHandler
+    handleDecreaseVote: ClickHandler
     handleDeleteComment: ClickHandler
 }
 
@@ -21,6 +23,20 @@ const CommentContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [user, setUser] = useState(currentUser)
     const [data, setData] = useState(comments)
     const [content, setContent] = useState('')
+    const [vote, setVote] = useState({ id: 0, upvoted: false, downvoted: false })
+
+    const updateData = (obj: any, updates: any) => {
+        const updateToApply = updates.find((upd: any) => upd.id === obj.id)
+        if (updateToApply) {
+            obj.score = obj.score + updateToApply.score
+        }
+
+        for (let k in obj) {
+            if (typeof obj[k] === 'object') {
+                updateData(obj[k], updates)
+            }
+        }
+    }
 
     const handleUser = () => {
         setUser('maxblagun')
@@ -53,6 +69,39 @@ const CommentContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
         setContent('')
     }
 
+    const handleIncreaseVote: ClickHandler = (e, id) => {
+        if (id === vote.id && vote.upvoted) return
+
+        const updated = [...data]
+        const updateArr = [{ id, score: 1 }]
+
+        updateData(updated, updateArr)
+
+        setData(updated)
+
+        setVote({
+            id,
+            upvoted: true,
+            downvoted: false,
+        })
+    }
+
+    const handleDecreaseVote: ClickHandler = (e, id) => {
+        if (id === vote.id && vote.downvoted) return
+
+        const updated = [...data]
+        const updateArr = [{ id, score: -1 }]
+
+        updateData(updated, updateArr)
+
+        setData(updated)
+        setVote({
+            id,
+            upvoted: false,
+            downvoted: true,
+        })
+    }
+
     const handleDeleteComment: ClickHandler = (e, id) => {
         e.preventDefault()
 
@@ -81,6 +130,8 @@ const CommentContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
         handleUser,
         handleChange,
         handleAddComment,
+        handleIncreaseVote,
+        handleDecreaseVote,
         handleDeleteComment,
     }
 

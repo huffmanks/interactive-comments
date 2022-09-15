@@ -11,7 +11,7 @@ const Comment = ({ comment }: any) => {
         <div className='w-full p-6 bg-white rounded-lg shadow-md'>
             <div className='flex flex-col-reverse md:flex-row gap-7'>
                 <div className='flex flex-wrap justify-between gap-5'>
-                    <VoteButton score={comment.score} />
+                    <VoteButton id={comment.id} score={comment.score} />
                     <ActionGroup comment={comment} viewport='mobile' />
                 </div>
 
