@@ -1,5 +1,9 @@
 {
-    "currentUser": "juliusomo",
+    "currentUser": {
+        "name": "juliusomo",
+        "upvotes": [],
+        "downvotes": []
+    },
     "comments": [
         {
             "id": 1,

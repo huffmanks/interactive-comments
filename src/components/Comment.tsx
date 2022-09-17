@@ -25,7 +25,7 @@ const Comment = ({ comment }: any) => {
 
                                 <div className='text-dark-blue font-medium'>{comment.user}</div>
 
-                                {user === comment.user && <div className='py-1 px-2 bg-moderate-blue text-white text-xs'>you</div>}
+                                {user.name === comment.user && <div className='py-1 px-2 bg-moderate-blue text-white text-xs'>you</div>}
 
                                 <div className='text-sm'>{comment.createdAt}</div>
                             </div>

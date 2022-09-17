@@ -7,7 +7,7 @@ type ClickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: num
 
 interface IContext {
     contentRef: RefObject<HTMLDivElement>
-    user: string
+    user: IUser
     data: IComment[]
     content: IContentState
     reply: IReplyState
@@ -20,6 +20,12 @@ interface IContext {
     handleReplyComment: ClickHandler
     handleEditComment: ClickHandler
     handleDeleteComment: ClickHandler
+}
+
+interface IUser {
+    name: string
+    upvotes: number[]
+    downvotes: number[]
 }
 
 interface IContentState {
@@ -40,7 +46,7 @@ const CommentContext = createContext({} as IContext)
 
 const CommentContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const contentRef = useRef<HTMLDivElement>(null)
-    const [user, setUser] = useState(currentUser)
+    const [user, setUser] = useState<IUser>(currentUser)
     const [data, setData] = useState(comments)
     const [content, setContent] = useState<IContentState>({ newComment: '', newReply: '' })
     const [reply, setReply] = useState<IReplyState>({ id: null, isReplying: false })
@@ -66,7 +72,10 @@ const CommentContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }
 
     const handleUser = () => {
-        setUser('maxblagun')
+        setUser({
+            ...user,
+            name: 'maxblagun',
+        })
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -90,7 +99,7 @@ const CommentContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
                 content: content.newReply,
                 createdAt: 'Today',
                 score: 0,
-                user,
+                user: user.name,
                 replies: [],
             }
 
@@ -110,7 +119,7 @@ const CommentContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
                     content: content.newComment,
                     createdAt: 'Today',
                     score: 0,
-                    user,
+                    user: user.name,
                     replies: [],
                 },
             ])
@@ -119,21 +128,41 @@ const CommentContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }
 
     const handleIncreaseVote: ClickHandler = (e, id) => {
+        if (user.upvotes.includes(id)) return
+
         const updated = [...data]
         const updateArr = [{ id, score: 1 }]
 
         updateData(updated, updateArr)
 
         setData(updated)
+
+        const filteredDownVotes = user.downvotes.filter((vote) => vote !== id)
+
+        setUser({
+            ...user,
+            ...(!user.downvotes.includes(id) && { upvotes: [...user.upvotes, id] }),
+            downvotes: filteredDownVotes,
+        })
     }
 
     const handleDecreaseVote: ClickHandler = (e, id) => {
+        if (user.downvotes.includes(id)) return
+
         const updated = [...data]
         const updateArr = [{ id, score: -1 }]
 
         updateData(updated, updateArr)
 
         setData(updated)
+
+        const filteredUpVotes = user.upvotes.filter((vote) => vote !== id)
+
+        setUser({
+            ...user,
+            upvotes: filteredUpVotes,
+            ...(!user.upvotes.includes(id) && { downvotes: [...user.downvotes, id] }),
+        })
     }
 
     const handleReplyComment: ClickHandler = (e, id) => {
