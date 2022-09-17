@@ -8,7 +8,7 @@ interface IProps {
 }
 
 const ActionGroup = ({ comment, viewport }: IProps) => {
-    const { user, handleDeleteComment } = useComment()
+    const { user, edit, handleReplyComment, handleEditComment, handleDeleteComment } = useComment()
 
     const styles: IStyles = {
         mobile: 'flex md:hidden',
@@ -20,10 +20,10 @@ const ActionGroup = ({ comment, viewport }: IProps) => {
             {user === comment.user ? (
                 <>
                     <ActionButton icon='MdDelete' color='red' buttonText='Delete' clickHandler={(e) => handleDeleteComment(e, comment.id)} />
-                    <ActionButton icon='MdEdit' color='blue' buttonText='Edit' />
+                    <ActionButton icon={edit.isEditing ? 'MdUpdate' : 'MdEdit'} color='blue' buttonText={edit.isEditing ? 'Update' : 'Edit'} clickHandler={(e) => handleEditComment(e, comment.id)} />
                 </>
             ) : (
-                <ActionButton icon='MdReply' color='blue' buttonText='Reply' />
+                <ActionButton icon='MdReply' color='blue' buttonText='Reply' clickHandler={(e) => handleReplyComment(e, comment.id)} />
             )}
         </div>
     )

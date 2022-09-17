@@ -4,7 +4,11 @@ import Button from './Button'
 import ProfileImage from './ProfileImage'
 import Textarea from './Textarea'
 
-const AddComment = () => {
+interface IProps {
+    [key: string]: string
+}
+
+const AddComment = ({ name }: IProps) => {
     const { user, handleAddComment } = useComment()
 
     return (
@@ -14,7 +18,7 @@ const AddComment = () => {
                     <ProfileImage user={user} />
                 </div>
                 <div className='w-full col-span-2 md:col-span-1 order-1 md:order-none'>
-                    <Textarea placeholder='Add a comment...' />
+                    <Textarea name={name} placeholder='Add a comment...' />
                 </div>
                 <div className='col-span-1 order-3 md:order-none justify-self-end'>
                     <Button icon='MdSend' buttonText='Send' clickHandler={handleAddComment} />

@@ -1,6 +1,6 @@
-import { MdEdit, MdDelete, MdReply } from 'react-icons/md'
+import { MdEdit, MdDelete, MdReply, MdUpdate } from 'react-icons/md'
 
-const icons = { MdEdit, MdDelete, MdReply }
+const icons = { MdEdit, MdDelete, MdReply, MdUpdate }
 
 interface IProps {
     icon: keyof typeof icons

@@ -22,7 +22,8 @@
                     "createdAt": "1 week ago",
                     "score": 4,
                     "replyingTo": "maxblagun",
-                    "user": "ramsesmiron"
+                    "user": "ramsesmiron",
+                    "replies": []
                 },
                 {
                     "id": 4,
@@ -30,7 +31,8 @@
                     "createdAt": "2 days ago",
                     "score": 2,
                     "replyingTo": "ramsesmiron",
-                    "user": "juliusomo"
+                    "user": "juliusomo",
+                    "replies": []
                 }
             ]
         }

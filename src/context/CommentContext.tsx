@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useState } from 'react'
+import { createContext, PropsWithChildren, RefObject, useContext, useRef, useState } from 'react'
 
 import { currentUser } from '../data/data.json'
 import { comments } from '../data/data.json'
@@ -6,29 +6,56 @@ import { comments } from '../data/data.json'
 type ClickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number) => void
 
 interface IContext {
+    contentRef: RefObject<HTMLDivElement>
     user: string
     data: IComment[]
-    content: string
+    content: IContentState
+    reply: IReplyState
+    edit: IEditState
     handleUser: () => void
     handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
     handleAddComment: React.MouseEventHandler<HTMLButtonElement>
     handleIncreaseVote: ClickHandler
     handleDecreaseVote: ClickHandler
+    handleReplyComment: ClickHandler
+    handleEditComment: ClickHandler
     handleDeleteComment: ClickHandler
+}
+
+interface IContentState {
+    [key: string]: string
+}
+
+interface IReplyState {
+    id: null | number
+    isReplying: boolean
+}
+
+interface IEditState {
+    id: null | number
+    isEditing: boolean
 }
 
 const CommentContext = createContext({} as IContext)
 
 const CommentContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
+    const contentRef = useRef<HTMLDivElement>(null)
     const [user, setUser] = useState(currentUser)
     const [data, setData] = useState(comments)
-    const [content, setContent] = useState('')
-    const [vote, setVote] = useState({ id: 0, upvoted: false, downvoted: false })
+    const [content, setContent] = useState<IContentState>({ newComment: '', newReply: '' })
+    const [reply, setReply] = useState<IReplyState>({ id: null, isReplying: false })
+    const [edit, setEdit] = useState<IEditState>({ id: null, isEditing: false })
 
     const updateData = (obj: any, updates: any) => {
         const updateToApply = updates.find((upd: any) => upd.id === obj.id)
         if (updateToApply) {
-            obj.score = obj.score + updateToApply.score
+            if (reply.isReplying) {
+                obj.replies = [...obj.replies, { ...updates[0].newReply, replyingTo: obj.user }]
+            } else if (edit.isEditing) {
+                obj.content = updates[0].updatedContent
+            } else {
+                obj.score = obj.score + updateToApply.score
+            }
         }
 
         for (let k in obj) {
@@ -43,9 +70,12 @@ const CommentContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const { value } = e.target
+        const { name, value } = e.target
 
-        setContent(value)
+        setContent({
+            ...content,
+            [name]: value,
+        })
     }
 
     const handleAddComment = () => {
@@ -54,52 +84,84 @@ const CommentContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
         const date = new Date()
         const unixTimestamp = Math.floor(date.getTime() / 1000)
 
-        setData([
-            ...data,
-            {
+        if (reply.isReplying) {
+            const newReply = {
                 id: unixTimestamp,
-                content,
+                content: content.newReply,
                 createdAt: 'Today',
                 score: 0,
                 user,
                 replies: [],
-            },
-        ])
+            }
 
-        setContent('')
+            const updated = [...data]
+            const updateArr = [{ id: reply.id, newReply }]
+
+            updateData(updated, updateArr)
+
+            setData(updated)
+
+            setReply({ id: null, isReplying: false })
+        } else {
+            setData([
+                ...data,
+                {
+                    id: unixTimestamp,
+                    content: content.newComment,
+                    createdAt: 'Today',
+                    score: 0,
+                    user,
+                    replies: [],
+                },
+            ])
+        }
+        setContent({ newComment: '', newReply: '' })
     }
 
     const handleIncreaseVote: ClickHandler = (e, id) => {
-        if (id === vote.id && vote.upvoted) return
-
         const updated = [...data]
         const updateArr = [{ id, score: 1 }]
 
         updateData(updated, updateArr)
 
         setData(updated)
-
-        setVote({
-            id,
-            upvoted: true,
-            downvoted: false,
-        })
     }
 
     const handleDecreaseVote: ClickHandler = (e, id) => {
-        if (id === vote.id && vote.downvoted) return
-
         const updated = [...data]
         const updateArr = [{ id, score: -1 }]
 
         updateData(updated, updateArr)
 
         setData(updated)
-        setVote({
+    }
+
+    const handleReplyComment: ClickHandler = (e, id) => {
+        setReply({
             id,
-            upvoted: false,
-            downvoted: true,
+            isReplying: true,
         })
+    }
+
+    const handleEditComment: ClickHandler = (e, id) => {
+        if (edit.isEditing) {
+            const updated = [...data]
+            const updateArr = [{ id, updatedContent: contentRef.current?.innerText }]
+
+            updateData(updated, updateArr)
+
+            setData(updated)
+
+            setEdit({
+                id: null,
+                isEditing: false,
+            })
+        } else {
+            setEdit({
+                id,
+                isEditing: true,
+            })
+        }
     }
 
     const handleDeleteComment: ClickHandler = (e, id) => {
@@ -124,14 +186,19 @@ const CommentContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }
 
     const contextValue: IContext = {
+        contentRef,
         user,
         data,
         content,
+        reply,
+        edit,
         handleUser,
         handleChange,
         handleAddComment,
         handleIncreaseVote,
         handleDecreaseVote,
+        handleReplyComment,
+        handleEditComment,
         handleDeleteComment,
     }
 

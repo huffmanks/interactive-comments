@@ -16,3 +16,7 @@ body {
     min-height: 100vh;
     font-family: 'Rubik', sans-serif;
 }
+
+.active-editing {
+    box-shadow: 0 0 0 8px #fff, 0 0 5px 9px hsl(238 40% 52% / 0.8);
+}

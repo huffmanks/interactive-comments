@@ -16,18 +16,28 @@ const App = () => {
             {data.map((comment: IComment) => (
                 <Fragment key={comment.id}>
                     <Comment comment={comment} />
-                    <NestedCommentContainer>
-                        {comment?.replies &&
-                            comment.replies.map((reply: IReply) => (
+                    {comment?.replies?.length !== 0 && (
+                        <NestedCommentContainer classes='w-[calc(100%_-_32px)]'>
+                            {comment?.replies?.map((reply: IReply) => (
                                 <Fragment key={reply.id}>
                                     <Comment comment={reply} />
+                                    {reply?.replies?.length !== 0 && (
+                                        <NestedCommentContainer>
+                                            {reply?.replies?.map((nestedReply) => (
+                                                <Fragment key={nestedReply.id}>
+                                                    <Comment comment={nestedReply} />
+                                                </Fragment>
+                                            ))}
+                                        </NestedCommentContainer>
+                                    )}
                                 </Fragment>
                             ))}
-                    </NestedCommentContainer>
+                        </NestedCommentContainer>
+                    )}
                 </Fragment>
             ))}
 
-            <AddComment />
+            <AddComment name='newComment' />
             <Attribution />
         </div>
     )
